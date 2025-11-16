@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { ExternalLink, Github } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 interface TechBadge {
   name: string
@@ -40,7 +40,7 @@ export default function ProjectCard({
   const [rotate, setRotate] = useState({ x: 0, y: 0 })
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const card = e.currentTarget
     const rect = card.getBoundingClientRect()
     const x = e.clientX - rect.left
@@ -51,16 +51,16 @@ export default function ProjectCard({
     const rotateY = (centerX - x) / 10
 
     setRotate({ x: rotateX, y: rotateY })
-  }
+  }, [])
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setRotate({ x: 0, y: 0 })
     setIsHovered(false)
-  }
+  }, [])
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     setIsHovered(true)
-  }
+  }, [])
 
   return (
     <motion.div
@@ -82,7 +82,7 @@ export default function ProjectCard({
           transformStyle: 'preserve-3d',
         }}
       >
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-48 overflow-hidden bg-muted">
           <Image
             src={image}
             alt={imageAlt}
@@ -91,9 +91,11 @@ export default function ProjectCard({
               isHovered ? 'scale-110' : 'scale-100'
             }`}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={featured}
+            quality={85}
           />
           {featured && (
-            <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+            <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
               Featured
             </div>
           )}

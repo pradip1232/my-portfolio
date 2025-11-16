@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { useTheme } from './ThemeProvider'
 
 export default function AnimatedBackground() {
@@ -14,17 +14,17 @@ export default function AnimatedBackground() {
     setMounted(true)
   }, [])
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mousePosRef.current = { x: e.clientX, y: e.clientY }
-    }
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    mousePosRef.current = { x: e.clientX, y: e.clientY }
+  }, [])
 
-    window.addEventListener('mousemove', handleMouseMove)
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [])
+  }, [handleMouseMove])
 
   useEffect(() => {
     if (!mounted) return

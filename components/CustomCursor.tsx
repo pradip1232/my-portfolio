@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 
 interface CustomCursorProps {
   enabled?: boolean
@@ -18,70 +18,63 @@ export default function CustomCursor({ enabled = true }: CustomCursorProps) {
   const [isTouchDevice, setIsTouchDevice] = useState(false)
   const dotRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
-  const animationFrameRef = useRef<number>()
+  const animationFrameRef = useRef<number | undefined>()
 
-  useEffect(() => {
-    // Detect touch device
-    const checkTouchDevice = () => {
-      return (
-        'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        // @ts-ignore
-        navigator.msMaxTouchPoints > 0
-      )
+  const checkTouchDevice = useCallback(() => {
+    return (
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      (navigator as any).msMaxTouchPoints > 0
+    )
+  }, [])
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
     }
 
+    animationFrameRef.current = requestAnimationFrame(() => {
+      setPosition({ x: e.clientX, y: e.clientY })
+      setIsVisible(true)
+    })
+  }, [])
+
+  const handleMouseLeave = useCallback(() => {
+    setIsVisible(false)
+  }, [])
+
+  const handleMouseOver = useCallback((e: MouseEvent) => {
+    const target = e.target as HTMLElement
+    const isHoverable =
+      target.tagName === 'A' ||
+      target.tagName === 'BUTTON' ||
+      target.closest('a') !== null ||
+      target.closest('button') !== null ||
+      target.getAttribute('role') === 'link' ||
+      target.classList.contains('cursor-pointer') ||
+      window.getComputedStyle(target).cursor === 'pointer'
+
+    setIsHovering(isHoverable)
+  }, [])
+
+  const handleMouseOut = useCallback(() => {
+    setIsHovering(false)
+  }, [])
+
+  useEffect(() => {
     const touchDevice = checkTouchDevice()
     setIsTouchDevice(touchDevice)
 
-    // Don't initialize cursor on touch devices
     if (touchDevice || !enabled) {
       return
     }
 
-    // Enable custom cursor on body
     document.body.classList.add('custom-cursor-enabled')
 
-    // Mouse move handler
-    const handleMouseMove = (e: MouseEvent) => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current)
-      }
-
-      animationFrameRef.current = requestAnimationFrame(() => {
-        setPosition({ x: e.clientX, y: e.clientY })
-        setIsVisible(true)
-      })
-    }
-
-    // Mouse leave handler
-    const handleMouseLeave = () => {
-      setIsVisible(false)
-    }
-
-    // Check for hoverable elements
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      const isHoverable =
-        target.tagName === 'A' ||
-        target.tagName === 'BUTTON' ||
-        target.closest('a') !== null ||
-        target.closest('button') !== null ||
-        target.getAttribute('role') === 'link' ||
-        target.classList.contains('cursor-pointer') ||
-        window.getComputedStyle(target).cursor === 'pointer'
-
-      setIsHovering(isHoverable)
-    }
-
-    const handleMouseOut = () => {
-      setIsHovering(false)
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
     window.addEventListener('mouseleave', handleMouseLeave)
-    document.addEventListener('mouseover', handleMouseOver)
-    document.addEventListener('mouseout', handleMouseOut)
+    document.addEventListener('mouseover', handleMouseOver, { passive: true })
+    document.addEventListener('mouseout', handleMouseOut, { passive: true })
 
     return () => {
       if (animationFrameRef.current) {
@@ -93,7 +86,7 @@ export default function CustomCursor({ enabled = true }: CustomCursorProps) {
       document.removeEventListener('mouseover', handleMouseOver)
       document.removeEventListener('mouseout', handleMouseOut)
     }
-  }, [enabled])
+  }, [enabled, checkTouchDevice, handleMouseMove, handleMouseLeave, handleMouseOver, handleMouseOut])
 
   // Update cursor positions
   useEffect(() => {

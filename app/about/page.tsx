@@ -51,8 +51,9 @@ const education = [
     iconBg: "bg-emerald-500",
     title: "MCA (Master of Computer Applications)",
     place: "Ajay Kumar Garg Engineering College, Ghaziabad (AKTU)",
-    start: 2020,
-    end: 2022,
+    start: "2020",
+    end: "2022",
+    duration: "2020 – 2022",
     description:
       "Pursued MCA at AKGEC (affiliated to AKTU), Ghaziabad, with emphasis on advanced software engineering and development skills.",
   },
@@ -62,8 +63,9 @@ const education = [
     iconBg: "bg-emerald-500",
     title: "BCA (Bachelor of Computer Applications)",
     place: "Bareilly College, M.J.P. Rohilkhand University (MJPRU)",
-    start: 2017,
-    end: 2020,
+    start: "2017",
+    end: "2020",
+    duration: "2017 – 2020",
     description:
       "Completed BCA from Bareilly College, MJPRU, focused on foundational computer science concepts and programming.",
   },
@@ -220,7 +222,7 @@ export default function About() {
             viewport={{ once: true }}
             variants={scrollAnimation}
           >
-            Hello, I'm a{" "}
+            Hello, I&apos;m a{" "}
             <span className="text-primary">Full-Stack Developer</span>
           </motion.h1>
           <motion.p

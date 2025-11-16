@@ -48,7 +48,8 @@ export default function Hero({
     }, isDeleting ? 50 : 100)
 
     return () => clearTimeout(timeout)
-  }, [displayedText, isDeleting, currentIndex, roles])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [displayedText, isDeleting, currentIndex])
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -85,7 +86,7 @@ export default function Hero({
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent leading-tight"
           variants={itemVariants}
         >
-          Hi, I'm{' '}
+          Hi, I&apos;m{' '}
           <span className="text-primary block sm:inline">
             {displayedText}
             <span className="animate-pulse">|</span>
