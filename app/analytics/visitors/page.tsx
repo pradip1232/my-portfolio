@@ -4,7 +4,52 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import MetricCard from "@/components/analytics/MetricCard";
 import VisitorCharts from "@/components/analytics/VisitorCharts";
+import CountryStats from "@/components/analytics/CountryStats";
 import { Users, Eye, TrendingUp } from "lucide-react";
+
+// Helper function to get country name from code
+function getCountryName(code: string): string {
+  const countryNames: { [key: string]: string } = {
+    US: "United States",
+    GB: "United Kingdom",
+    CA: "Canada",
+    AU: "Australia",
+    DE: "Germany",
+    FR: "France",
+    IT: "Italy",
+    ES: "Spain",
+    NL: "Netherlands",
+    BE: "Belgium",
+    CH: "Switzerland",
+    AT: "Austria",
+    SE: "Sweden",
+    NO: "Norway",
+    DK: "Denmark",
+    FI: "Finland",
+    PL: "Poland",
+    PT: "Portugal",
+    GR: "Greece",
+    IE: "Ireland",
+    NZ: "New Zealand",
+    JP: "Japan",
+    CN: "China",
+    KR: "South Korea",
+    IN: "India",
+    BR: "Brazil",
+    MX: "Mexico",
+    AR: "Argentina",
+    CL: "Chile",
+    CO: "Colombia",
+    SA: "Saudi Arabia",
+    AE: "UAE",
+    ZA: "South Africa",
+    EG: "Egypt",
+    TR: "Turkey",
+    RU: "Russia",
+    Unknown: "Unknown",
+  };
+  return countryNames[code] || code;
+}
 
 interface AnalyticsData {
   totalVisitors: number;
@@ -21,6 +66,7 @@ interface AnalyticsData {
     live: number;
     timestamp: string;
   }>;
+  countryData: Array<{ country: string; visitors: number }>;
   lastUpdated: string;
 }
 
@@ -232,12 +278,23 @@ export default function AnalyticsPage() {
           value={data.totalVisitors}
           icon={Users}
           color="text-blue-500"
+          country={
+            data.countryData && data.countryData.length > 0
+              ? getCountryName(data.countryData[0].country)
+              : undefined
+          }
+          subtitle={
+            data.countryData && data.countryData.length > 0
+              ? `Top: ${data.countryData[0].visitors} visitors`
+              : undefined
+          }
         />
         <MetricCard
           title="Live Visitors"
           value={data.liveVisitors}
           icon={Eye}
           color="text-green-500"
+          subtitle="Currently active"
         />
         <MetricCard
           title="Daily Average"
@@ -251,6 +308,11 @@ export default function AnalyticsPage() {
           }
           icon={TrendingUp}
           color="text-purple-500"
+          subtitle={
+            data.countryData && data.countryData.length > 1
+              ? `${data.countryData.length} countries`
+              : undefined
+          }
         />
       </div>
 
@@ -271,6 +333,13 @@ export default function AnalyticsPage() {
             No visitor data yet. Charts will appear as visitors are tracked.
           </p>
         </motion.div>
+      )}
+
+      {/* Country Statistics */}
+      {data.countryData && data.countryData.length > 0 && (
+        <div className="mt-8">
+          <CountryStats countryData={data.countryData} />
+        </div>
       )}
     </div>
   );

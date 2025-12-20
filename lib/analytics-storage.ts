@@ -8,7 +8,8 @@ const LIVE_VISITORS_FILE = path.join(DATA_DIR, 'live-visitors.json');
 export interface VisitorData {
   totalVisitors: number;
   dailyVisitors: { [date: string]: number };
-  hourlyData: { timestamp: string; count: number }[];
+  hourlyData: { timestamp: string; count: number; country?: string }[];
+  countryData: { [country: string]: number };
   lastUpdated: string;
 }
 
@@ -42,6 +43,7 @@ function getDefaultVisitorData(): VisitorData {
     totalVisitors: 0,
     dailyVisitors: {},
     hourlyData: [],
+    countryData: {},
     lastUpdated: new Date().toISOString(),
   };
 }
@@ -84,6 +86,10 @@ export function readVisitorData(): VisitorData {
         totalVisitors: parsed.totalVisitors,
         dailyCount: Object.keys(parsed.dailyVisitors || {}).length,
       });
+      // Ensure countryData exists for backward compatibility
+      if (!parsed.countryData) {
+        parsed.countryData = {};
+      }
       // Cache in memory
       memoryStore.visitors = parsed;
       return parsed;
@@ -172,11 +178,12 @@ export function writeLiveVisitors(visitors: LiveVisitor[]): void {
 }
 
 // Add a new visitor
-export function addVisitor(sessionId: string): void {
-  console.log('[Analytics] Adding visitor with session:', sessionId.substring(0, 20) + '...');
+export function addVisitor(sessionId: string, country?: string): void {
+  console.log('[Analytics] Adding visitor with session:', sessionId.substring(0, 20) + '...', 'Country:', country || 'Unknown');
   
   const data = readVisitorData();
   const today = new Date().toISOString().split('T')[0];
+  const countryName = country || 'Unknown';
   console.log('[Analytics] Today:', today, 'Current total:', data.totalVisitors);
   
   // Check if this session already counted today by looking at recent hourly data
@@ -196,13 +203,18 @@ export function addVisitor(sessionId: string): void {
   // Always increment total and daily (API handles duplicate prevention via cookies)
   data.totalVisitors += 1;
   data.dailyVisitors[today] = (data.dailyVisitors[today] || 0) + 1;
-  console.log('[Analytics] Incremented visitor count. New total:', data.totalVisitors, 'Today:', data.dailyVisitors[today]);
+  
+  // Update country data
+  data.countryData = data.countryData || {};
+  data.countryData[countryName] = (data.countryData[countryName] || 0) + 1;
+  console.log('[Analytics] Incremented visitor count. New total:', data.totalVisitors, 'Today:', data.dailyVisitors[today], 'Country:', countryName, 'Count:', data.countryData[countryName]);
 
   // Add hourly data point
   const now = new Date().toISOString();
   data.hourlyData.push({
     timestamp: now,
     count: data.totalVisitors,
+    country: countryName,
   });
   console.log('[Analytics] Added hourly data point. Total data points:', data.hourlyData.length);
 

@@ -10,6 +10,8 @@ interface MetricCardProps {
   value: number;
   icon: LucideIcon;
   color?: string;
+  country?: string;
+  subtitle?: string;
 }
 
 export default function MetricCard({
@@ -17,6 +19,8 @@ export default function MetricCard({
   value,
   icon: Icon,
   color = "text-primary",
+  country,
+  subtitle,
 }: MetricCardProps) {
   const [displayValue, setDisplayValue] = useState(0);
 
@@ -62,6 +66,13 @@ export default function MetricCard({
               >
                 {displayValue.toLocaleString()}
               </motion.p>
+              {(country || subtitle) && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  {country && `🌍 ${country}`}
+                  {country && subtitle && " • "}
+                  {subtitle}
+                </p>
+              )}
             </div>
             <div className={`${color} opacity-80`}>
               <Icon className="h-8 w-8" />

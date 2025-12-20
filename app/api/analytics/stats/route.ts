@@ -72,12 +72,25 @@ export async function GET() {
 
     console.log('[API Stats] Processed live trend data:', liveTrendData.length, 'points');
 
+    // Process country data (ensure it exists for backward compatibility)
+    const countryData = visitorData.countryData || {};
+    const countryStats = Object.entries(countryData)
+      .filter(([country, count]) => country && count > 0)
+      .map(([country, count]) => ({
+        country,
+        visitors: count as number,
+      }))
+      .sort((a, b) => b.visitors - a.visitors); // Sort by visitor count descending
+
+    console.log('[API Stats] Processed country data:', countryStats.length, 'countries');
+
     const response = {
       totalVisitors: visitorData.totalVisitors,
       liveVisitors: liveVisitors.length,
       dailyData,
       hourlyData,
       liveTrendData,
+      countryData: countryStats,
       lastUpdated: visitorData.lastUpdated,
     };
 
@@ -86,6 +99,7 @@ export async function GET() {
       liveVisitors: response.liveVisitors,
       dailyDataCount: response.dailyData.length,
       hourlyDataCount: response.hourlyData.length,
+      countryCount: response.countryData.length,
     });
 
     return NextResponse.json(response);

@@ -4,6 +4,54 @@ import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
+// Helper function to detect country from request headers
+function detectCountry(request: NextRequest): string {
+  // Check various headers that hosting providers use
+  const headers = request.headers;
+  
+  // Cloudflare
+  const cfCountry = headers.get('cf-ipcountry');
+  if (cfCountry && cfCountry !== 'XX') {
+    return cfCountry;
+  }
+  
+  // Vercel
+  const vercelCountry = headers.get('x-vercel-ip-country');
+  if (vercelCountry) {
+    return vercelCountry;
+  }
+  
+  // Netlify
+  const netlifyCountry = headers.get('x-country-code');
+  if (netlifyCountry) {
+    return netlifyCountry;
+  }
+  
+  // AWS CloudFront
+  const cloudfrontCountry = headers.get('cloudfront-viewer-country');
+  if (cloudfrontCountry) {
+    return cloudfrontCountry;
+  }
+  
+  // Fallback to Accept-Language header (less accurate)
+  const acceptLanguage = headers.get('accept-language');
+  if (acceptLanguage) {
+    // Extract first language code
+    const langMatch = acceptLanguage.match(/^([a-z]{2})/i);
+    if (langMatch) {
+      // Map common language codes to countries (simplified)
+      const langToCountry: { [key: string]: string } = {
+        'en': 'US', 'es': 'ES', 'fr': 'FR', 'de': 'DE', 'it': 'IT',
+        'pt': 'PT', 'ru': 'RU', 'ja': 'JP', 'ko': 'KR', 'zh': 'CN',
+        'ar': 'SA', 'hi': 'IN', 'nl': 'NL', 'pl': 'PL', 'tr': 'TR',
+      };
+      return langToCountry[langMatch[1].toLowerCase()] || 'Unknown';
+    }
+  }
+  
+  return 'Unknown';
+}
+
 export async function POST(request: NextRequest) {
   console.log('[API Track] POST /api/analytics/track called');
   console.log('[API Track] Environment:', {
@@ -15,6 +63,10 @@ export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
     const visitorCookie = cookieStore.get('visitor_session');
+    
+    // Detect country
+    const country = detectCountry(request);
+    console.log('[API Track] Detected country:', country);
     
     console.log('[API Track] Visitor cookie exists?', !!visitorCookie?.value);
     
@@ -38,8 +90,8 @@ export async function POST(request: NextRequest) {
       });
       
       console.log('[API Track] Cookie set, tracking new visitor');
-      // Track new visitor
-      addVisitor(sessionId);
+      // Track new visitor with country
+      addVisitor(sessionId, country);
       
       return response;
     }
@@ -54,7 +106,7 @@ export async function POST(request: NextRequest) {
     if (!lastVisitCookie) {
       // First visit today for this session
       console.log('[API Track] First visit today, counting visitor');
-      addVisitor(sessionId);
+      addVisitor(sessionId, country);
       
       const response = NextResponse.json({ success: true, sessionId, counted: true });
       response.cookies.set(`last_visit_${today}`, 'true', {
