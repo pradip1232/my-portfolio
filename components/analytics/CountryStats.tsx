@@ -331,7 +331,7 @@ export default function CountryStats({ countryData }: CountryStatsProps) {
               <BarChart
                 data={chartData.slice(0, 15)}
                 margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
-                onClick={(data) => {
+                onClick={(data: any) => {
                   if (data && data.activePayload) {
                     const country = data.activePayload[0]?.payload?.country;
                     setSelectedCountry(country === selectedCountry ? null : country);
@@ -413,16 +413,18 @@ export default function CountryStats({ countryData }: CountryStatsProps) {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={({ name, percent, visitors }) =>
-                      `${name}\n${(percent * 100).toFixed(1)}% (${visitors})`
-                    }
+                    label={(props: any) => {
+                      const { name, percent, payload } = props;
+                      const visitors = payload?.visitors || 0;
+                      return `${name}\n${(percent * 100).toFixed(1)}% (${visitors})`;
+                    }}
                     outerRadius={selectedCountry ? 140 : 120}
                     innerRadius={selectedCountry ? 60 : 40}
                     fill="#8884d8"
                     dataKey="visitors"
                     animationBegin={0}
                     animationDuration={800}
-                    onClick={(data) => {
+                    onClick={(data: any) => {
                       if (data && data.country) {
                         setSelectedCountry(data.country === selectedCountry ? null : data.country);
                       }
@@ -449,8 +451,8 @@ export default function CountryStats({ countryData }: CountryStatsProps) {
                       borderRadius: "8px",
                       boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                     }}
-                    formatter={(value: number, name: string, props: any) => [
-                      `${value.toLocaleString()} visitors (${((value / totalVisitors) * 100).toFixed(1)}%)`,
+                    formatter={(value: any, name: any, props: any) => [
+                      `${(value || 0).toLocaleString()} visitors (${(((value || 0) / totalVisitors) * 100).toFixed(1)}%)`,
                       props.payload.name,
                     ]}
                   />
