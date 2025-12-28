@@ -8,9 +8,14 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# Redirect all requests to Next.js
+# Next.js function redirects
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/nextjs-func/api/:splat"
+  status = 200
+
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/next"
+  to = "/.netlify/functions/nextjs-func/:splat"
   status = 200
 
