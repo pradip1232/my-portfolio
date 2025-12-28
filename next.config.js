@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  output: 'export',
+  trailingSlash: true,
   images: {
+    unoptimized: true,
     domains: ['images.unsplash.com', 'via.placeholder.com'],
     remotePatterns: [
       {
@@ -9,12 +12,6 @@ const nextConfig = {
         hostname: '**',
       },
     ],
-  },
-  // Ensure API routes work in serverless environments
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '2mb',
-    },
   },
 }
 
