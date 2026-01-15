@@ -12,7 +12,7 @@ const experiences = [
     iconBg: "bg-blue-500",
     title: "Software Engineer",
     place: "AcrossAssist Fintech, Gurugram (Onsite)",
-    start: " July 2025",
+    start: " August 2025",
     end: "Present",
     duration: "July 2025 – Present",
     description:
