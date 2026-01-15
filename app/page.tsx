@@ -26,8 +26,8 @@ import { getFeaturedProjects } from "@/app/projects/projectData";
 import WorkingModal from "@/components/WorkingModal";
 import aboutImg from '../app/assets/images/pic-removebg-preview (1).png';
 
-// Get featured projects for home page (limit to 1 for preview)
-const featuredProjects = getFeaturedProjects(1);
+// Get featured projects for home page (limit to 3 for preview)
+const featuredProjects = getFeaturedProjects(3);
 
 const stats = [
   { icon: Code, value: "17+", label: "Projects Completed" },

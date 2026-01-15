@@ -13,6 +13,26 @@ export interface Project {
 // All projects data
 export const allProjects: Project[] = [
   {
+    title: "Pesticide Management System",
+    description:
+      "Comprehensive pesticide management platform with user and admin dashboards. Features product catalog, order management, inventory tracking, and safety guidelines. Built with React.js, PHP, MySQL, and deployed via cPanel with CI/CD pipeline.",
+    image:
+      "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=800&h=600&fit=crop",
+    imageAlt: "Pesticide Management System",
+    technologies: [
+      { name: "React.js" },
+      { name: "JavaScript" },
+      { name: "PHP" },
+      { name: "MySQL" },
+      { name: "cPanel" },
+      { name: "CI/CD" },
+      { name: "REST API" },
+    ],
+    githubUrl: "https://github.com/username/pesticide-management",
+    liveUrl: "https://pesticide-system.example.com",
+    featured: true,
+  },
+  {
     title: "Admin Panel for Product Management",
     description:
       "Admin panel for product management with uploads, pricing, and inventory. Built with ReactJS, Tailwind CSS, Material-UI, PHP, and MySQL. Deployed via cPanel or GCP for scalability.",
