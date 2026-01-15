@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Briefcase, GraduationCap } from "lucide-react";
+import aboutImg from '../assets/images/pic-removebg-preview (1).png';
 
 // Refined: experience dates are now shown clearly and visually separated
 const experiences = [
@@ -274,10 +275,12 @@ export default function About() {
                 }}
               >
                 <Image
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=800&fit=crop"
+                  src={aboutImg}
                   alt="Profile picture"
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </motion.div>
