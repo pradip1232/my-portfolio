@@ -7,7 +7,9 @@
 @import './mixins.css';
 @import './components.css';
 @import './globals.css';
-
+body {
+   overflow-x: hidden;
+}
 /* 
 Usage: Import this file in your main CSS or component files
 @import '../styles/index.css';

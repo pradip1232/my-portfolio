@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Briefcase, GraduationCap } from "lucide-react";
+import { Briefcase, GraduationCap, Award, ExternalLink } from "lucide-react";
 import aboutImg from '../assets/images/pic-removebg-preview (1).png';
 
 // Refined: experience dates are now shown clearly and visually separated
@@ -72,6 +72,39 @@ const education = [
   },
 ];
 
+
+const certifications = [
+  {
+    title: "Software Engineer",
+    issuer: "HackerRank",
+    url: "https://www.hackerrank.com/certificates/iframe/b396c542c229",
+  },
+  {
+    title: "SQL (Intermediate)",
+    issuer: "HackerRank",
+    url: "https://www.hackerrank.com/certificates/iframe/d0c4a894c73d",
+  },
+  {
+    title: "Front-End Developer (ReactJS)",
+    issuer: "HackerRank",
+    url: "https://www.hackerrank.com/certificates/iframe/eead164a427a",
+  },
+  {
+    title: "JavaScript (Intermediate)",
+    issuer: "HackerRank",
+    url: "https://www.hackerrank.com/certificates/iframe/bcd2c26a22a9",
+  },
+  {
+    title: "REST API (Intermediate)",
+    issuer: "HackerRank",
+    url: "https://www.hackerrank.com/certificates/d45565ac1cd6",
+  },
+  {
+    title: "Python Certification",
+    issuer: "HackerRank",
+    url: "https://www.hackerrank.com/certificates/21a0d2db42ab",
+  },
+];
 const scrollAnimation = {
   hidden: { opacity: 0, y: 50 },
   visible: {
@@ -363,6 +396,104 @@ export default function About() {
               </h2>
             </motion.div>
             <Timeline data={education} />
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Certifications Section */}
+      <motion.section
+        className="py-12 sm:py-16 md:py-20"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={scrollAnimation}
+      >
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              className="mb-8 sm:mb-12"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={scrollAnimation}
+            >
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-8 text-center">
+                Certifications & Achievements
+              </h2>
+            </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {certifications.map((cert, idx) => (
+                <motion.a
+                  key={cert.title}
+                  href={cert.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative bg-card/90 rounded-lg shadow-xl border border-primary/10 px-6 py-5 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 block"
+                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{
+                    type: "spring",
+                    duration: 0.6,
+                    delay: idx * 0.1,
+                    bounce: 0.3,
+                  }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  {/* Icon with animation */}
+                  <motion.div
+                    className="mb-4 flex justify-between items-center gap-3"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.1 + 0.2, duration: 0.5 }}
+                    viewport={{ once: true }}
+                  >
+                    <motion.span
+                      className="bg-primary/10 rounded-full p-2.5 group-hover:bg-primary/20 transition-colors"
+                      whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Award className="w-6 h-6 text-primary" />
+                    </motion.span>
+                    <motion.span
+                      className="text-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                      initial={{ x: -10 }}
+                      whileHover={{ x: 0 }}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </motion.span>
+                  </motion.div>
+
+                  {/* Title */}
+                  <motion.h3
+                    className="font-bold text-lg mb-2 group-hover:text-primary transition-colors"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.1 + 0.25, duration: 0.4 }}
+                    viewport={{ once: true }}
+                  >
+                    {cert.title}
+                  </motion.h3>
+
+                  {/* Issuer */}
+                  <motion.p
+                    className="text-sm text-muted-foreground"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.1 + 0.3, duration: 0.4 }}
+                    viewport={{ once: true }}
+                  >
+                    {cert.issuer}
+                  </motion.p>
+
+                  {/* Hover effect overlay */}
+                  <motion.div
+                    className="absolute inset-0 rounded-lg bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    initial={false}
+                  />
+                </motion.a>
+              ))}
+            </div>
           </div>
         </div>
       </motion.section>

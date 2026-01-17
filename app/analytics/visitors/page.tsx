@@ -312,9 +312,12 @@ export default function AnalyticsPage() {
             Last updated: {new Date(data.lastUpdated).toLocaleString()}
           </p>
         )}
+      
+      {/*
         <div className="mt-2 text-xs text-muted-foreground bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full inline-block">
           📊 Demo Mode: Showing simulated analytics data
         </div>
+        */}
       </motion.div>
 
       {/* Metric Cards */}
