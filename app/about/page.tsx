@@ -281,8 +281,6 @@ export default function About() {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
               </motion.div>
               <motion.div
                 className="space-y-3 sm:space-y-4 order-2 md:order-2"
