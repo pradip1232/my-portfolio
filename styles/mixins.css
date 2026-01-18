@@ -150,7 +150,7 @@
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
   line-height: 1;
-  transition: all var(--transition-fast);
+  transition: var(--transition-fast);
   cursor: pointer;
   border: none;
   text-decoration: none;
@@ -220,7 +220,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
+  transition: var(--transition-normal);
 }
 
 .card-hover {
@@ -248,7 +248,7 @@
   background: var(--background);
   color: var(--foreground);
   font-size: var(--text-sm);
-  transition: all var(--transition-fast);
+  transition: var(--transition-fast);
 }
 
 .input-base:focus {

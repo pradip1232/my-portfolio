@@ -1,21 +1,24 @@
 /* ===================================
-   STYLES INDEX - IMPORT ALL STYLES
+   STYLES INDEX - IMPORT ALL CSS STYLES
    =================================== */
 
-/* Import all style modules in correct order */
+/* Import all CSS modules in correct order */
 @import './variables.css';
 @import './mixins.css';
 @import './components.css';
 @import './globals.css';
+
 body {
    overflow-x: hidden;
 }
+
 /* 
 Usage: Import this file in your main CSS or component files
 @import '../styles/index.css';
 
-Or import individual modules:
-@import '../styles/variables.css';
-@import '../styles/mixins.css';
-@import '../styles/components.css';
+CSS Architecture:
+- variables.css: CSS custom properties & design tokens
+- mixins.css: Utility classes & reusable patterns
+- components.css: Component-specific styles
+- globals.css: Global base styles & resets
 */
