@@ -7,6 +7,8 @@ import PageTransition from "@/components/PageTransition";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import Footer from "@/components/Footer";
+import CodeProtection from "@/components/CodeProtection";
+import ChatBot from "@/components/chatbot";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +27,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider>
+          <CodeProtection />
           <AnimatedBackground />
           <CustomCursor enabled={true} />
           <Navigation />
@@ -34,6 +37,7 @@ export default function RootLayout({
               <Footer />
             </main>
           </PageTransition>
+          <ChatBot />
         </ThemeProvider>
       </body>
     </html>

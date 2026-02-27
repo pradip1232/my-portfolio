@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
-  const version = 'v1.0.0'
+  const version = 'v3.2.0'
 
   return (
     <footer className="border-t bg-background/95 backdrop-blur-sm">
