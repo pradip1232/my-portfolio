@@ -62,8 +62,8 @@ export default function ChatWindow({
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 text-white">
-        <h3 className="font-semibold text-lg">Atul AI Assistant</h3>
-        <p className="text-xs opacity-90">Ask me anything about Atul</p>
+        <h3 className="font-semibold text-lg">Pradip Mourya AI Assistant</h3>
+        <p className="text-xs opacity-90">Ask me anything about Pradip</p>
       </div>
 
       {/* Messages */}

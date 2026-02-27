@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       messages: [
         {
           role: 'system',
-          content: `You are Atul Kumar's AI assistant. Answer only about his skills, projects, and experience. Be professional, concise, and helpful.`,
+          content: `You are Pradip Mourya's AI assistant. Answer only about his skills, projects, and experience. Be professional, concise, and helpful.`,
         },
         ...messages,
       ],

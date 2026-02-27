@@ -15,7 +15,7 @@ const QUICK_QUESTIONS = [
 
 const INITIAL_MESSAGE: Message = {
   role: 'assistant',
-  content: "Hi 👋 I'm Atul AI. Ask me about his skills, projects, or experience.",
+  content: "Hi 👋 I'm Pradip Mourya AI. Ask me about his skills, projects, or experience.",
 };
 
 export default function ChatBot() {
