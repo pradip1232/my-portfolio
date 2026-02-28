@@ -130,7 +130,7 @@ const CodeProtection: React.FC = () => {
             Code Protection Active
           </h2>
           <p className="text-gray-600 dark:text-gray-300 mb-6">
-            This website's code is protected. If you're interested in the source code or have any questions, please contact the owner.
+            {`This website's code is protected. If you're interested in the source code or have any questions, please contact the owner.`}
           </p>
           <div className="flex flex-col gap-3">
             <button
