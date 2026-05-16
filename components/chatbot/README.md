@@ -1,6 +1,6 @@
 # AI ChatBot Component
 
-A professional floating AI chatbot for your Next.js portfolio, powered by OpenAI GPT-4o-mini.
+A professional floating AI chatbot for your Next.js portfolio, powered by Google Gemini API.
 
 ## 📁 Folder Structure
 
@@ -19,23 +19,17 @@ components/chatbot/
 
 ## 🚀 Setup Instructions
 
-### 1. Install OpenAI SDK (Already Installed)
+### 1. Get Gemini API Key (Free)
 
-The OpenAI SDK is already in your package.json. If you need to install it manually:
-
-```bash
-npm install openai
-```
+Get your free API key from: https://aistudio.google.com/app/apikey
 
 ### 2. Configure Environment Variables
 
 Create a `.env.local` file in your project root:
 
 ```bash
-OPENAI_API_KEY=sk-your-openai-api-key-here
+GEMINI_API_KEY=your-gemini-api-key-here
 ```
-
-Get your API key from: https://platform.openai.com/api-keys
 
 ### 3. Integration (Already Done)
 
@@ -60,6 +54,7 @@ import ChatBot from "@/components/chatbot";
 - ✅ Enter key to send
 - ✅ Professional UI/UX
 - ✅ Secure API key handling
+- ✅ Free tier compatible (Google Gemini)
 
 ## 🔧 Customization
 
@@ -88,10 +83,7 @@ const QUICK_QUESTIONS = [
 Edit `app/api/chat/route.ts`:
 
 ```tsx
-{
-  role: 'system',
-  content: `Your custom system prompt here`,
-}
+const systemInstruction = "Your custom system prompt here";
 ```
 
 ### Change Colors
@@ -117,7 +109,7 @@ The chatbot automatically adapts to mobile screens:
 
 - API key stored in environment variables
 - Never exposed to frontend
-- API route handles all OpenAI communication
+- API route handles all Gemini communication
 - Error handling for invalid keys
 
 ## 🧪 Testing
@@ -131,7 +123,7 @@ Test the chatbot:
 
 ## 🐛 Troubleshooting
 
-### "Invalid API key configuration"
+### "AI service is currently unavailable"
 - Check your `.env.local` file exists
 - Verify the API key is correct
 - Restart your dev server after adding the key
@@ -148,19 +140,19 @@ Test the chatbot:
 
 ## 📦 Dependencies
 
-- `openai` - OpenAI SDK
 - `framer-motion` - Animations
 - `react` - UI framework
 - `next` - Framework
+- No external AI SDK needed (uses native fetch)
 
 ## 🎯 API Usage
 
 The chatbot uses:
-- Model: `gpt-4o-mini`
+- Model: `gemini-2.5-flash`
 - Max tokens: 500
 - Temperature: 0.7
 
-Estimated cost: ~$0.0001 per message (very affordable)
+**Cost**: Free tier available with generous limits!
 
 ## 📝 License
 

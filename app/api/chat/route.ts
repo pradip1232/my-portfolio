@@ -1,68 +1,86 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
+
+interface Message {
+  role: string;
+  content: string;
+}
+
+interface RequestBody {
+  messages: Message[];
+}
 
 export async function POST(req: NextRequest) {
   try {
-    // Check for API key at runtime, not at module import time
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
     
-    if (!apiKey) {
+    if (!apiKey || apiKey === 'your-gemini-api-key-here') {
       return NextResponse.json(
-        { error: 'OpenAI API key not configured' },
-        { status: 500 }
+        { message: 'AI service is currently unavailable. Please try again later.' },
+        { status: 200 }
       );
     }
 
-    // Initialize OpenAI client inside the handler
-    const openai = new OpenAI({
-      apiKey: apiKey,
-    });
+    const body: RequestBody = await req.json();
 
-    const { messages } = await req.json();
-
-    if (!messages || !Array.isArray(messages)) {
+    if (!body.messages || !Array.isArray(body.messages) || body.messages.length === 0) {
       return NextResponse.json(
-        { error: 'Invalid messages format' },
-        { status: 400 }
+        { message: 'Invalid request format.' },
+        { status: 200 }
       );
     }
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: `You are Pradip Mourya's AI assistant. Answer only about his skills, projects, and experience. Be professional, concise, and helpful.`,
+    const latestMessage = body.messages[body.messages.length - 1];
+    const userMessage = latestMessage.content;
+
+    const systemInstruction = "You are Pradip Mourya's AI assistant. Answer only about his skills, projects, and experience. Be confident and professional.";
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        ...messages,
-      ],
-      temperature: 0.7,
-      max_tokens: 500,
-    });
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: `${systemInstruction}\n\nUser: ${userMessage}`,
+                },
+              ],
+            },
+          ],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 500,
+          },
+        }),
+      }
+    );
 
-    const assistantMessage = completion.choices[0]?.message?.content;
-
-    if (!assistantMessage) {
+    if (!response.ok) {
       return NextResponse.json(
-        { error: 'No response from AI' },
-        { status: 500 }
+        { message: 'AI service is currently unavailable. Please try again later.' },
+        { status: 200 }
       );
     }
 
-    return NextResponse.json({ message: assistantMessage });
-  } catch (error: any) {
-    console.error('Chat API Error:', error);
-    
-    if (error?.status === 401) {
+    const data = await response.json();
+    const aiMessage = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!aiMessage) {
       return NextResponse.json(
-        { error: 'Invalid API key configuration' },
-        { status: 500 }
+        { message: 'AI service is currently unavailable. Please try again later.' },
+        { status: 200 }
       );
     }
 
+    return NextResponse.json({ message: aiMessage });
+  } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to process chat request' },
-      { status: 500 }
+      { message: 'AI service is currently unavailable. Please try again later.' },
+      { status: 200 }
     );
   }
 }
