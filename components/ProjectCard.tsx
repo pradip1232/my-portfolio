@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ExternalLink, Github } from 'lucide-react'
 import { useState, useCallback } from 'react'
 
@@ -74,7 +74,7 @@ export default function ProjectCard({
       className="h-full"
     >
       <Card
-        className={`h-full overflow-hidden transition-all duration-300 ${
+        className={`h-full flex flex-col overflow-hidden transition-all duration-300 ${
           featured ? 'border-2 border-primary' : ''
         } ${isHovered ? 'shadow-2xl' : ''}`}
         style={{
@@ -82,7 +82,8 @@ export default function ProjectCard({
           transformStyle: 'preserve-3d',
         }}
       >
-        <div className="relative h-48 overflow-hidden bg-muted">
+        {/* Image */}
+        <div className="relative h-48 overflow-hidden bg-muted flex-shrink-0">
           <Image
             src={image}
             alt={imageAlt}
@@ -100,11 +101,15 @@ export default function ProjectCard({
             </div>
           )}
         </div>
-        <CardHeader>
+
+        {/* Title + Description — grows to fill space */}
+        <CardHeader className="flex-1">
           <CardTitle className="text-2xl">{title}</CardTitle>
           <CardDescription className="text-base">{description}</CardDescription>
         </CardHeader>
-        <CardContent>
+
+        {/* Technologies + Buttons — always pinned to bottom */}
+        <CardContent className="pt-0">
           <div className="flex flex-wrap gap-2 mb-4">
             {technologies.map((tech, index) => (
               <motion.span
@@ -119,25 +124,25 @@ export default function ProjectCard({
               </motion.span>
             ))}
           </div>
+          <div className="flex gap-2">
+            {githubUrl && (
+              <Link href={githubUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+                <Button variant="outline" className="w-full">
+                  <Github className="mr-2 h-4 w-4" />
+                  GitHub
+                </Button>
+              </Link>
+            )}
+            {liveUrl && (
+              <Link href={liveUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+                <Button className="w-full">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  View Live
+                </Button>
+              </Link>
+            )}
+          </div>
         </CardContent>
-        <CardFooter className="flex gap-2">
-          {githubUrl && (
-            <Link href={githubUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-              <Button variant="outline" className="w-full">
-                <Github className="mr-2 h-4 w-4" />
-                GitHub
-              </Button>
-            </Link>
-          )}
-          {liveUrl && (
-            <Link href={liveUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-              <Button className="w-full">
-                <ExternalLink className="mr-2 h-4 w-4" />
-                View Live
-              </Button>
-            </Link>
-          )}
-        </CardFooter>
       </Card>
     </motion.div>
   )

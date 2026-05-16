@@ -14,6 +14,24 @@ export interface Project {
 // All projects data - embedded directly to avoid import issues
 const projectsData = {
   "projects": [
+     {
+      "id": 6,
+      "title": "Alternate Travel Plan Dashboard",
+      "description": "Fully dynamic multi-client Admin Dashboard with dynamic client switching, API-driven analytics, interactive charts, advanced tables, reusable modals, filters, real-time dashboard updates, and a fully responsive modern SaaS UI.",
+      "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=600&fit=crop",
+      "imageAlt": "Alternate Travel Plan Dashboard",
+      "technologies": [
+        { "name": "React" },
+        { "name": "Next.js" },
+        { "name": "TypeScript" },
+        { "name": "Tailwind CSS" },
+        { "name": "Recharts" },
+        { "name": "Framer Motion" }
+      ],
+      "githubUrl": "https://github.com/pradip1232/alternate-travel-plan-dashboard",
+      "liveUrl": "https://alternate-travel-plan-dashboard.vercel.app",
+      "featured": true
+    },
     {
       "id": 1,
       "title": "Pesticide Management System",
@@ -103,8 +121,9 @@ const projectsData = {
       "liveUrl": "https://tradeconnect.vercel.app",
       "featured": true
     },
+   
     {
-      "id": 6,
+      "id": 7,
       "title": "Task Management App",
       "description": "A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
       "image": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop",
@@ -120,7 +139,7 @@ const projectsData = {
       "featured": false
     },
     {
-      "id": 7,
+      "id": 8,
       "title": "Social Media Dashboard",
       "description": "Analytics dashboard for social media metrics with data visualization, real-time updates, and comprehensive reporting features.",
       "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
@@ -136,7 +155,7 @@ const projectsData = {
       "featured": false
     },
     {
-      "id": 8,
+      "id": 9,
       "title": "E-Commerce Platform",
       "description": "A full-stack e-commerce platform built with Next.js, MongoDB, and Stripe. Features include user authentication, product management, shopping cart, and payment processing.",
       "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
